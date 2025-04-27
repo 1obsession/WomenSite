@@ -11,7 +11,7 @@
 1. Клонировать репозиторий:
 ```bash
 git clone https://github.com/1obsession/WomenSite.git
-)
+
 ```
 2. Установить зависимости:
 ```bash
