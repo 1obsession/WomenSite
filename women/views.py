@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseNotFound, Http404, HttpResponsePermanentRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.defaultfilters import slugify
@@ -26,6 +28,7 @@ def handle_uploaded_file(f):
             destination.write(chunk)
 
 
+@login_required
 def about(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
@@ -38,12 +41,15 @@ def about(request):
     return render(request, 'women/about.html', {'title': 'О сайте','form': form})
 
 
-class AddPage(DataMixin, CreateView):
+class AddPage(LoginRequiredMixin, DataMixin, CreateView):
     template_name = 'women/addpage.html'
     form_class = AddPostForm
     title_page = 'Добавление страницы'
 
-
+    def form_valid(self, form):
+        w = form.save(commit=False)
+        w.author = self.request.user
+        return super().form_valid(form)
 def contact(request):
     return HttpResponse('Контактная информация будет позднее')
 
