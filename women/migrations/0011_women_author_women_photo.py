@@ -12,15 +12,3 @@ class Migration(migrations.Migration):
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
-    operations = [
-        migrations.AddField(
-            model_name='women',
-            name='author',
-            field=models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='posts', to=settings.AUTH_USER_MODEL),
-        ),
-        migrations.AddField(
-            model_name='women',
-            name='photo',
-            field=models.ImageField(blank=True, default=None, null=True, upload_to='photos/%Y%m%d/', verbose_name='Фото'),
-        ),
-    ]

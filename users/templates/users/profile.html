@@ -3,8 +3,13 @@
 {% block content %}
 <h1>Профиль</h1>
  
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
+    {% if user.photo %}
+    <p><img src="{{ user.photo.url }}" width="120" height="150"></p>
+    {% else %}
+    <p><img src="{{ default_image }}" width="120" height="120"></p>
+    {% endif %}
     <div class="form-error">{{ form.non_field_errors }}</div>
     {% for f in form %}
     <p ><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
@@ -13,5 +18,7 @@
  
     <p ><button type="submit">Сохранить</button></p>
 </form>
+<hr>
+<p><a href="{% url 'users:password_change' %}">Сменить пароль</a> </p>
  
 {% endblock %}
