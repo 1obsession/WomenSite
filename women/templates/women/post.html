@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% block breadcrumbs %}
+{% if perms.women.change_women %}
+<p><a href="{% url 'edit_page' post.slug %}">Редактировать</a></p>
+{% endif %}
 {% with post.tag.all as tags%}
 {% if tags %}
 <ul class="tags-list">

@@ -1,11 +1,11 @@
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponse, HttpResponseNotFound, Http404, HttpResponsePermanentRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.defaultfilters import slugify
 from django.urls import reverse, reverse_lazy
 from django.views import View
-from django.views.generic import TemplateView, ListView, DetailView, FormView, CreateView
+from django.views.generic import TemplateView, ListView, DetailView, FormView, CreateView, UpdateView
 
 from .forms import AddPostForm, UploadFileForm
 from .models import Women, Category, TagPost, UploadFiles
@@ -41,10 +41,11 @@ def about(request):
     return render(request, 'women/about.html', {'title': 'О сайте','form': form})
 
 
-class AddPage(LoginRequiredMixin, DataMixin, CreateView):
+class AddPage(PermissionRequiredMixin, LoginRequiredMixin, DataMixin, CreateView):
     template_name = 'women/addpage.html'
     form_class = AddPostForm
     title_page = 'Добавление страницы'
+    permission_required = 'women.add_women'
 
     def form_valid(self, form):
         w = form.save(commit=False)
@@ -52,6 +53,17 @@ class AddPage(LoginRequiredMixin, DataMixin, CreateView):
         return super().form_valid(form)
 
 
+class UpdatePage(PermissionRequiredMixin, DataMixin, UpdateView):
+    model = Women
+    slug_url_kwarg = 'edit_slug'
+    template_name = 'women/addpage.html'
+    fields = ['title', 'content', 'photo', 'is_published', 'cat']
+    title_page = 'Редактирование статьи'
+    success_url = reverse_lazy('home')
+    permission_required = 'women.change_women'
+
+
+@permission_required(perm='women.view_women', raise_exception=True)
 def contact(request):
     return HttpResponse('Контактная информация будет позднее')
 
