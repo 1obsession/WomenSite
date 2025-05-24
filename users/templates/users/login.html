@@ -13,6 +13,12 @@
     {% endfor %}
     <p><button type="submit">Войти</button></p>
 
+
     <p><a href="{% url 'users:password_reset' %}">Забыли пароль?</a></p>
 </form>
+<hr>
+<p>
+    <a href="{% url 'social:begin' 'github' %}"><img src="/media/social-auth/github.png" height="50" width="50"></img> </a>
+    <a href="{% url 'social:begin' 'vk-oauth2' %}"><img src="/media/social-auth/vk.png" height="50" width="50"></img> </a>
+</p>
 {% endblock %}
