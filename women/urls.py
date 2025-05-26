@@ -1,11 +1,13 @@
 from django.urls import path, register_converter
+from django.views.decorators.cache import cache_page
+
 from . import views
 from . import converters
 
 register_converter(converters.FourDigitYearConverter, "year4")
 
 urlpatterns = [
-    path('', views.WomenHome.as_view(), name='home'),
+    path('', cache_page(30)(views.WomenHome.as_view()), name='home'),
     path('about/', views.about, name='about'),
     path('addpage/', views.AddPage.as_view(), name='add_page'),
     path('contact/', views.ContactFormView.as_view(), name='contact'),
