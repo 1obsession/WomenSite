@@ -79,10 +79,6 @@ class ContactFormView(LoginRequiredMixin, DataMixin, FormView):
         return super().form_valid(form)
 
 
-def login(request):
-    return HttpResponse('Авторизация на стадии разработки')
-
-
 class ShowPost(DataMixin, DetailView):
     template_name = 'women/post.html'
     context_object_name = 'post'
